@@ -10,7 +10,7 @@ def get_exchange_rates(currency_main,currency_convert):
 
     if response.status_code == 200:
         data = response.json()
-        # print(data)
+        #print(data)
         return data['rates'][currency_convert]
     else:
         raise Exception(f"Error getting exchange rates: {response.status_code}!")
@@ -19,19 +19,38 @@ def calculate_profit(amount,buy,sell,exchange_rate):
     if buy == sell:
         return amount,0.0
     
-    buy = amount/exchange_rate
-    sell = amount*exchange_rate
-
-    profit = sell - buy
+    buy = amount*exchange_rate
+    # print(buy)
+    sell = amount/exchange_rate
+    # print(sell)
+    profit = buy
 
     return round(profit,2)
 
 
 #Test Case
 amount = int(input("Enter Amount : "))
-buy = input("Enter Currency to buy : ")
-sell = input('Enter Currency to sell : ')
+original = amount
+buy_currencies = ['GBP','USD','EUR' ]
+selling_currency = 'PKR'
+original_curr = selling_currency
 
-exchange_rate = get_exchange_rates(buy,sell)
-profit = calculate_profit(amount,buy,sell,exchange_rate)
-print(f"Profit from buying {amount} {buy} and selling in {sell} is : {profit}")
+total_profit = 0.0
+for currency in buy_currencies:
+    exchange_rate = get_exchange_rates(selling_currency,currency)
+    profit = calculate_profit(amount,selling_currency, currency, exchange_rate)
+    print(f"Buying {amount} {selling_currency}  for {currency}: {profit}")
+    amount = profit
+    selling_currency= currency
+    total_profit = profit
+
+# print(f"Total profit: {total_profit}")
+
+exchange_rate = get_exchange_rates(selling_currency,original_curr)
+profit = calculate_profit(amount,selling_currency,original_curr,exchange_rate)
+
+print(f"Converting it back to original : {profit} {original_curr}")
+
+profit -= original
+
+print(f"Total profit: {profit} {original_curr}")
