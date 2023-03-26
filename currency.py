@@ -20,7 +20,7 @@ def calculate_profit(amount,buy,sell,exchange_rate):
         return amount,0.0
     
     buy = amount/exchange_rate
-    sell = amount/exchange_rate
+    sell = amount*exchange_rate
 
     profit = sell - buy
 
