@@ -10,7 +10,7 @@ def get_exchange_rates(currency_main,currency_convert):
 
     if response.status_code == 200:
         data = response.json()
-        print(data)
+        # print(data)
         return data['rates'][currency_convert]
     else:
         raise Exception(f"Error getting exchange rates: {response.status_code}!")
